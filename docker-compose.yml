@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  getgrav:
+    build:
+      context: .
+      dockerfile: .docker/getgrav/Dockerfile
+      args:
+        - GRAV_VERSION=${GRAV_VERSION}
+        - GROUP_ID=${GROUP_ID}
+        - USER_ID=${USER_ID}
+    container_name: "${PROJECT_NAME}_getgrav"
+    environment:
+      GRAV_VERSION: ${GRAV_VERSION}
+      GRAV_SETUP: ${GRAV_SETUP}
+    volumes:
+      - ./project:/var/www/html:delegated
+    ports:
+      - 8000:80
