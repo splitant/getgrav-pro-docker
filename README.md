@@ -1,62 +1,39 @@
-# Official Docker Image for Grav
+# Getgrav CMS pro docker
 
-This currently is pretty minimal and uses:
+## About The Project
 
-* apache-2.4.38
-* GD library
-* Unzip library
-* php7.4
-* php7.4-opcache
-* php7.4-acpu
-* php7.4-yaml
-* cron
-* vim editor
+The goal is to set up fastly a local Getgrav CMS project with docker environment for professional uses.
 
-## Persisting data
+### Built With
 
-To save the Grav site data to the host file system (so that it persists even after the container has been removed), simply map the container's `/var/www/html` directory to a named Docker volume or to a directory on the host.
+* [Getgrav CMS](https://github.com/getgrav/grav)
 
-> If the mapped directory or named volume is empty, it will be automatically populated with a fresh install of Grav the first time that the container starts. However, once the directory/volume has been populated, the data will persist and will not be overwritten the next time the container starts.
+## New project
 
-## Building the image from Dockerfile
+   ```sh
+   make create-init <project>
+   cd ../<project>-docker
+   make copy-env-file
+   # Fill env file
+   make up
+   ```
 
-```
-docker build -t grav:latest .
-```
+## Existing project
 
-## Running Grav Image with Latest Grav + Admin:
+### Create project directory
 
-```
-docker run -p 8000:80 grav:latest
-```
+(Soon)
 
-Point browser to `http://localhost:8000` and create user account...
+## Make commands
 
-## Running Grav Image with Latest Grav + Admin with a named volume (can be used in production)
+### Connect to Prestashop container
 
-```
-docker run -d -p 8000:80 --restart always -v grav_data:/var/www/html grav:latest
-```
+  ```sh
+  make shell
+  ```
 
-## Running Grav Image with docker-compose and a volume mapped to a local directory
+### Reset project
 
-Running `docker-compose up -d` with the following docker-compose configuration will automatically build the Grav image (if the Dockerfile is in the same directory as the docker-compose.yml file). Then the Grav container will be started with all of the site data persisted to a named volume (stored in the `./grav` directory.
-
-```.yml
-volumes:
-  grav-data:
-    driver: local
-    driver_opts:
-      type: none
-      device: $PWD/grav
-      o: bind
-
-services:
-  grav:
-    build: ./
-    ports:
-      - 8080:80
-    volumes:
-      - grav-data:/var/www/html
-```
-# getgrav-pro-docker
+  ```sh
+  make prune
+  ```
