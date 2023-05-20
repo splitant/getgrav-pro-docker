@@ -45,6 +45,15 @@ RUN { \
     echo 'expose_php=off'; \
     } > /usr/local/etc/php/conf.d/php-recommended.ini
 
+# XDebug.
+RUN yes | pecl install xdebug-3.1.6 \
+   && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+   && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
+   && echo "xdebug.discover_client_host=0" >> /usr/local/etc/php/conf.d/xdebug.ini \
+   && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/xdebug.ini \
+   && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/xdebug.ini \
+   && echo "xdebug.client_host=172.17.0.1" >> /usr/local/etc/php/conf.d/xdebug.ini
+
 RUN pecl install apcu \
     && pecl install yaml-2.0.4 \
     && docker-php-ext-enable apcu yaml
